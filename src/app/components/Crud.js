@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-export default function Crud() {
-    return (
-        <h1>
-            Start
-        </h1>
-    );
+import NavBar from './NavBar';
+
+export default class Crud extends Component {
+    render() {
+        return (
+            <NavBar />
+        );
+    }
 }
