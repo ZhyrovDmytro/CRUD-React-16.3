@@ -10,6 +10,8 @@ import Typography from '@material-ui/core/Typography';
 
 import { withStyles } from '@material-ui/core/styles';
 
+import { PAGE, ROUT } from '../../constants';
+
 import ContainedButtons from './buttons/Button';
 
 
@@ -28,20 +30,20 @@ const styles = {
 
 class Header extends Component {
     state = {
-        page: 'main',
-        route: '/CreateUser',
+        page: PAGE.MAIN,
+        route: ROUT.CREATE_USER,
     };
 
     changeRoute = () => {
-        if (this.state.page === 'main' && this.state.route === '/CreateUser') {
+        if (this.state.page === PAGE.MAIN && this.state.route === ROUT.CREATE_USER) {
             this.setState({
-                route: '/',
-                page: 'create',
+                route: ROUT.MAIN,
+                page: PAGE.CREATE_USER,
             });
-        } else if (this.state.page === 'create' || (this.state.page === 'main' && this.state.route === '/')) {
+        } else if (this.state.page === PAGE.CREATE_USER || (this.state.page === PAGE.MAIN && this.state.route === ROUT.HOME)) {
             this.setState({
-                route: '/CreateUser',
-                page: 'main',
+                route: ROUT.CREATE_USER,
+                page: PAGE.MAIN,
             });
         }
     }

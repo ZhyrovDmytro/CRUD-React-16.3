@@ -11,6 +11,8 @@ import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
 import HomeIcon from '@material-ui/icons/Home';
 
+import { ROUT } from '../../../constants';
+
 const styles = theme => ({
     button: {
         margin: theme.spacing.unit,
@@ -28,7 +30,7 @@ function ContainedButtons(props) {
         route,
         changeRoute,
     } = props;
-    console.log(props.route);
+
     return (
         <Button
             variant={variant}
@@ -38,7 +40,7 @@ function ContainedButtons(props) {
             to={`${route}`}
             onClick={changeRoute}
         >
-            {route === '/CreateUser' ? <AddIcon /> : <HomeIcon />}
+            {route === ROUT.CREATE_USER ? <AddIcon /> : <HomeIcon />}
             {content}
         </Button>
     );

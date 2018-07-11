@@ -11,8 +11,8 @@ export default class Crud extends Component {
         return (
             <BrowserRouter>
                 <MuiThemeProvider theme={theme}>
-                        <Header />
-                        <Main />
+                    <Header />
+                    <Main />
                 </MuiThemeProvider>
             </BrowserRouter>
         );
