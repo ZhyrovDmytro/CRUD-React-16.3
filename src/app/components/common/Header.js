@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-// import { Link, Route } from 'react-router-dom';
 
 import PropTypes from 'prop-types';
 
@@ -28,6 +27,25 @@ const styles = {
 };
 
 class Header extends Component {
+    state = {
+        page: 'main',
+        route: '/CreateUser',
+    };
+
+    changeRoute = () => {
+        if (this.state.page === 'main' && this.state.route === '/CreateUser') {
+            this.setState({
+                route: '/',
+                page: 'create',
+            });
+        } else if (this.state.page === 'create' || (this.state.page === 'main' && this.state.route === '/')) {
+            this.setState({
+                route: '/CreateUser',
+                page: 'main',
+            });
+        }
+    }
+
     render() {
         const { classes } = this.props;
 
@@ -44,9 +62,10 @@ class Header extends Component {
                         </Typography>
                         <ContainedButtons
                             content=""
-                            link="/create-new-user"
                             color="secondary"
                             variant="fab"
+                            changeRoute={() => { this.changeRoute(); }}
+                            route={this.state.route}
                         />
                     </Toolbar>
                 </AppBar>
