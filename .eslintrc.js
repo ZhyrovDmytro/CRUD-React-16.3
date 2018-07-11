@@ -11,6 +11,8 @@ module.exports = {
         // Also indent `case` in `switch` statement
         // https://eslint.org/docs/rules/indent
         indent: ['error', 4, { SwitchCase: 1 }],
+        "no-unused-expressions": "off",
+
 
         // Specify the maximum length of a line in your program
         // https://eslint.org/docs/rules/max-len

@@ -8,7 +8,7 @@ import 'svgxuse';
 import { render } from './render';
 import Crud from './components/Crud';
 
-const app = (config) => {
+const app = () => {
     render(Crud, document.querySelector('.root'));
 };
 
