@@ -1,0 +1,19 @@
+.Create {
+    &__main-info {
+        display: flex;
+        flex-direction: column;
+        margin: 20px 0;
+    }
+
+    &__datepicker {
+        margin: 0 0 20px;
+    }
+
+    &__buttons-group {
+        text-align: right;
+    }
+
+    &__radio-group {
+        flex-direction: row !important;
+    }
+}
