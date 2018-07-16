@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 
 import { Link } from 'react-router-dom';
 
@@ -11,6 +11,8 @@ import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
 import HomeIcon from '@material-ui/icons/Home';
 
+import MyContext from '../../../context/index';
+
 import { ROUT } from '../../../constants';
 
 const styles = theme => ({
@@ -22,36 +24,45 @@ const styles = theme => ({
     },
 });
 
-function ContainedButtons(props) {
-    const {
-        content,
-        color,
-        variant,
-        route,
-        changeRoute,
-    } = props;
+class ContainedButtons extends Component {
+    handleClick = (context) => {
+        context.updateUsersList();
+        context.changePage();
+    };
 
-    return (
-        <Button
-            variant={variant}
-            color={color}
-            aria-label="add"
-            component={Link}
-            to={`${route}`}
-            onClick={changeRoute}
-        >
-            {route === ROUT.CREATE_USER ? <AddIcon /> : <HomeIcon />}
-            {content}
-        </Button>
-    );
+    render() {
+        const {
+            content,
+            color,
+            variant,
+        } = this.props;
+
+        return (
+            <MyContext.Consumer>
+                {context => (
+                    <Button
+                        variant={variant}
+                        color={color}
+                        component={Link}
+                        to={context.mainPage ? ROUT.MAIN : ROUT.CREATE_USER}
+                        onClick={() => {
+                            this.handleClick(context);
+                        }}
+                    >
+                        {(context.mainPage && !content) && <HomeIcon />}
+                        {(!context.mainPage && !content) && <AddIcon />}
+                        {content}
+                    </Button>
+                )}
+            </MyContext.Consumer>
+        );
+    }
 }
 
 ContainedButtons.propTypes = {
     content: PropTypes.string.isRequired,
     variant: PropTypes.string.isRequired,
     color: PropTypes.string.isRequired,
-    route: PropTypes.string.isRequired,
-    changeRoute: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(ContainedButtons);

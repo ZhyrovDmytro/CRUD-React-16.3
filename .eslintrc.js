@@ -12,6 +12,7 @@ module.exports = {
         // https://eslint.org/docs/rules/indent
         indent: ['error', 4, { SwitchCase: 1 }],
         "no-unused-expressions": "off",
+        'react/jsx-boolean-value': ['error', 'never'],
 
 
         // Specify the maximum length of a line in your program
