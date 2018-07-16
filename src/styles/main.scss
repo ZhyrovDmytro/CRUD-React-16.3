@@ -11,3 +11,11 @@ body {
 }
 
 @import 'components/*';
+
+a {
+    margin: 5px;
+
+    &:hover {
+        color: #fff;
+    }
+}

@@ -8,7 +8,7 @@ class UserList extends Component {
     }
 
     render() {
-        const createUsers = this.userList.map((user) =>
+        const createUsers = this.userList.map(user =>
             (
                 <div
                     key={`_${user.id}`}

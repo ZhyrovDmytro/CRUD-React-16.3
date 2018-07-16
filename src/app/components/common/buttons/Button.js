@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { Component } from 'react';
+
+import { Link } from 'react-router-dom';
 
 import PropTypes from 'prop-types';
 
@@ -7,6 +9,11 @@ import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 
 import AddIcon from '@material-ui/icons/Add';
+import HomeIcon from '@material-ui/icons/Home';
+
+import MyContext from '../../../context/index';
+
+import { ROUT } from '../../../constants';
 
 const styles = theme => ({
     button: {
@@ -17,31 +24,44 @@ const styles = theme => ({
     },
 });
 
-function ContainedButtons(props) {
-    const {
-        content,
-        link,
-        color,
-        variant,
-    } = props;
+class ContainedButtons extends Component {
+    handleClick = (context) => {
+        context.updateUsersList();
+        context.changePage();
+    };
 
-    return (
-        <Button
-            variant={variant}
-            href={link}
-            color={color}
-            aria-label="add"
-        >
-            <AddIcon />
-            {content}
-        </Button>
-    );
+    render() {
+        const {
+            content,
+            color,
+            variant,
+        } = this.props;
+
+        return (
+            <MyContext.Consumer>
+                {context => (
+                    <Button
+                        variant={variant}
+                        color={color}
+                        component={Link}
+                        to={context.mainPage ? ROUT.MAIN : ROUT.CREATE_USER}
+                        onClick={() => {
+                            this.handleClick(context);
+                        }}
+                    >
+                        {(context.mainPage && !content) && <HomeIcon />}
+                        {(!context.mainPage && !content) && <AddIcon />}
+                        {content}
+                    </Button>
+                )}
+            </MyContext.Consumer>
+        );
+    }
 }
 
 ContainedButtons.propTypes = {
     content: PropTypes.string.isRequired,
     variant: PropTypes.string.isRequired,
-    link: PropTypes.string.isRequired,
     color: PropTypes.string.isRequired,
 };
 

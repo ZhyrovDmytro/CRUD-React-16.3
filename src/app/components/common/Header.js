@@ -1,14 +1,9 @@
 import React, { Component } from 'react';
-// import { Link, Route } from 'react-router-dom';
-
 import PropTypes from 'prop-types';
 
 import AppBar from '@material-ui/core/AppBar';
-
 import Toolbar from '@material-ui/core/Toolbar';
-
 import Typography from '@material-ui/core/Typography';
-
 import { withStyles } from '@material-ui/core/styles';
 
 import ContainedButtons from './buttons/Button';
@@ -44,7 +39,6 @@ class Header extends Component {
                         </Typography>
                         <ContainedButtons
                             content=""
-                            link="/create-new-user"
                             color="secondary"
                             variant="fab"
                         />
