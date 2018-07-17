@@ -26,7 +26,9 @@ class RadioButtonsGroup extends React.Component {
     };
 
     handleChange = (event) => {
-        this.setState({ value: event.target.value });
+        this.setState({ value: event.target.value }, () => {
+            this.props.radioButtonValue(this.state.value);
+        });
     };
 
     render() {
@@ -64,6 +66,7 @@ RadioButtonsGroup.propTypes = {
     formLabel: PropTypes.string.isRequired,
     className: PropTypes.string.isRequired,
     error: PropTypes.bool.isRequired,
+    radioButtonValue: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(RadioButtonsGroup);

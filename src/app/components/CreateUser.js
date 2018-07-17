@@ -34,6 +34,20 @@ class CreateUser extends Component {
         });
     };
 
+    handleGenderValue = (value) => {
+        this.setState({
+            gender: value,
+        });
+    };
+
+    handleStudentValue = (value) => {
+        const isStudent = (value === 'Yes') ? true : false;
+
+        this.setState({
+            isStudent,
+        });
+    };
+
     changeRoute = () => {
         this.setState({
             page: PAGE.MAIN,
@@ -65,7 +79,7 @@ class CreateUser extends Component {
     render() {
         const labels = {
             gender: ['Male', 'Female'],
-            isStudent: ['yes', 'no'],
+            isStudent: ['Yes', 'No'],
         };
 
         return (
@@ -96,6 +110,7 @@ class CreateUser extends Component {
                             labels={labels.gender}
                             className="Create__radio-group"
                             error={this.state.error}
+                            radioButtonValue={this.handleGenderValue}
                         />
                         <DatePicker
                             className="Create__datepicker"
@@ -106,6 +121,7 @@ class CreateUser extends Component {
                             labels={labels.isStudent}
                             className="Create__radio-group"
                             error={this.state.error}
+                            radioButtonValue={this.handleStudentValue}
                         />
                         <div className="Create__buttons-group">
                             <ContainedButtons
