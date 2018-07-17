@@ -11,6 +11,8 @@ import ContainedButtons from '../components/common/buttons/Button';
 
 import { ROUT, PAGE } from '../constants';
 
+import MyContext from '../context/index';
+
 class CreateUser extends Component {
     state = {
         name: '',
@@ -40,8 +42,14 @@ class CreateUser extends Component {
         });
     };
 
+    handleBirthValue = (value) => {
+        this.setState({
+            birthday: value,
+        });
+    };
+
     handleStudentValue = (value) => {
-        const isStudent = (value === 'Yes') ? true : false;
+        const isStudent = (value === 'Yes') && true;
 
         this.setState({
             isStudent,
@@ -54,7 +62,7 @@ class CreateUser extends Component {
         });
     }
 
-    handleClick = () => {
+    addNewUser = () => {
         const {
             name,
             surname,
@@ -71,7 +79,7 @@ class CreateUser extends Component {
             isStudent,
         };
 
-        const users = JSON.parse(localStorage.getItem('users') || []);
+        const users = JSON.parse(localStorage.getItem('users')) || [];
         users.push(user);
         localStorage.setItem('users', JSON.stringify(users));
     };
@@ -83,59 +91,68 @@ class CreateUser extends Component {
         };
 
         return (
-            <Card>
-                <CardContent>
-                    <form className="Create">
-                        <Typography variant="headline" component="h1">
-                            Create new user
-                        </Typography>
-                        <div className="Create__main-info">
-                            <TextField
-                                required
-                                label="Name"
-                                className="col-xs-12 col-md-6"
-                                error={this.state.error}
-                                inputValue={this.handleNameValue}
-                            />
-                            <TextField
-                                required
-                                label="Surname"
-                                className="col-xs-12 col-md-6"
-                                error={this.state.error}
-                                inputValue={this.handleSurnameValue}
-                            />
-                        </div>
-                        <RadioButtonGroup
-                            formLabel="Gender"
-                            labels={labels.gender}
-                            className="Create__radio-group"
-                            error={this.state.error}
-                            radioButtonValue={this.handleGenderValue}
-                        />
-                        <DatePicker
-                            className="Create__datepicker"
-                            error={this.state.error}
-                        />
-                        <RadioButtonGroup
-                            formLabel="Student"
-                            labels={labels.isStudent}
-                            className="Create__radio-group"
-                            error={this.state.error}
-                            radioButtonValue={this.handleStudentValue}
-                        />
-                        <div className="Create__buttons-group">
-                            <ContainedButtons
-                                content="Create User"
-                                color="primary"
-                                variant="contained"
-                                changeRoute={this.handleClick}
-                                onClick={this.handleClick}
-                                route={ROUT.MAIN}
-                            />
-                        </div>
-                    </form>
-                </CardContent>
-            </Card>
+            <MyContext.Consumer>
+                {context => (
+                    <Card>
+                        <CardContent>
+                            <form className="Create">
+                                <Typography variant="headline" component="h1">
+                                    Create new user
+                                </Typography>
+                                <div className="Create__main-info">
+                                    <TextField
+                                        required
+                                        label="Name"
+                                        className="col-xs-12 col-md-6"
+                                        error={this.state.error}
+                                        inputValue={this.handleNameValue}
+                                    />
+                                    <TextField
+                                        required
+                                        label="Surname"
+                                        className="col-xs-12 col-md-6"
+                                        error={this.state.error}
+                                        inputValue={this.handleSurnameValue}
+                                    />
+                                </div>
+                                <RadioButtonGroup
+                                    formLabel="Gender"
+                                    labels={labels.gender}
+                                    className="Create__radio-group"
+                                    error={this.state.error}
+                                    radioButtonValue={this.handleGenderValue}
+                                />
+                                <DatePicker
+                                    className="Create__datepicker"
+                                    error={this.state.error}
+                                    datePickerValue={this.handleBirthValue}
+                                />
+                                <RadioButtonGroup
+                                    formLabel="Student"
+                                    labels={labels.isStudent}
+                                    className="Create__radio-group"
+                                    error={this.state.error}
+                                    radioButtonValue={this.handleStudentValue}
+                                />
+                                <div className="Create__buttons-group">
+                                    <ContainedButtons
+                                        content="Create User"
+                                        color="primary"
+                                        variant="contained"
+                                        changeRoute={this.handleClick}
+                                        onClick={() => {
+                                            this.addNewUser();
+                                            context.updateUsersList();
+                                            context.changePage();
+                                        }}
+                                        route={ROUT.MAIN}
+                                    />
+                                </div>
+                            </form>
+                        </CardContent>
+                    </Card>
+                )}
+            </MyContext.Consumer>
         );
     }
 }

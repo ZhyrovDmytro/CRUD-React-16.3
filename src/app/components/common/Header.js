@@ -6,6 +6,8 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 
+import MyContext from '../../context/index';
+
 import ContainedButtons from './buttons/Button';
 
 
@@ -27,24 +29,33 @@ class Header extends Component {
         const { classes } = this.props;
 
         return (
-            <div className={classes.root}>
-                <AppBar position="static" color="primary">
-                    <Toolbar>
-                        <Typography
-                            className={classes.flex}
-                            variant="title"
-                            color="inherit"
-                        >
-                            SPA CRUD with React 16.3
-                        </Typography>
-                        <ContainedButtons
-                            content=""
-                            color="secondary"
-                            variant="fab"
-                        />
-                    </Toolbar>
-                </AppBar>
-            </div>
+            <MyContext.Consumer>
+                {context => (
+                    <div className={classes.root}>
+                        <AppBar position="static" color="primary">
+                            <Toolbar>
+                                <Typography
+                                    className={classes.flex}
+                                    variant="title"
+                                    color="inherit"
+                                >
+                                    SPA CRUD with React 16.3
+                                </Typography>
+                                <ContainedButtons
+                                    content=""
+                                    color="secondary"
+                                    variant="fab"
+                                    changePage="change"
+                                    onClick={() => {
+                                        context.updateUsersList();
+                                        context.changePage();
+                                    }}
+                                />
+                            </Toolbar>
+                        </AppBar>
+                    </div>
+                )}
+            </MyContext.Consumer>
         );
     }
 }

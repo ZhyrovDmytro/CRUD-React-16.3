@@ -40,7 +40,12 @@ class RadioButtonsGroup extends React.Component {
         } = this.props;
 
         const RadioLabel = labels.map(label => (
-            <FormControlLabel key={Math.random()} value={label} control={<Radio />} label={label} />
+            <FormControlLabel
+                key={Math.random()}
+                value={label}
+                control={<Radio />}
+                label={label}
+            />
         ));
 
         return (

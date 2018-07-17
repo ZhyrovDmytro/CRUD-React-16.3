@@ -35,6 +35,7 @@ class ContainedButtons extends Component {
             content,
             color,
             variant,
+            onClick,
         } = this.props;
 
         return (
@@ -45,9 +46,7 @@ class ContainedButtons extends Component {
                         color={color}
                         component={Link}
                         to={context.mainPage ? ROUT.MAIN : ROUT.CREATE_USER}
-                        onClick={() => {
-                            this.handleClick(context);
-                        }}
+                        {...{ onClick }}
                     >
                         {(context.mainPage && !content) && <HomeIcon />}
                         {(!context.mainPage && !content) && <AddIcon />}
@@ -63,6 +62,7 @@ ContainedButtons.propTypes = {
     content: PropTypes.string.isRequired,
     variant: PropTypes.string.isRequired,
     color: PropTypes.string.isRequired,
+    onClick: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(ContainedButtons);
