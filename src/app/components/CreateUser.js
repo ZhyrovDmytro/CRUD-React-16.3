@@ -42,6 +42,12 @@ class CreateUser extends Component {
         });
     };
 
+    handleBirthValue = (value) => {
+        this.setState({
+            birthday: value,
+        });
+    };
+
     handleStudentValue = (value) => {
         const isStudent = (value === 'Yes') && true;
 
@@ -119,6 +125,7 @@ class CreateUser extends Component {
                                 <DatePicker
                                     className="Create__datepicker"
                                     error={this.state.error}
+                                    datePickerValue={this.handleBirthValue}
                                 />
                                 <RadioButtonGroup
                                     formLabel="Student"
