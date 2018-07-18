@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 
 import TextField from '@material-ui/core/TextField';
 
-const DatePicker = () => {
+const DatePicker = (props) => {
     const {
         className,
         error,
         name,
         errortext,
-        onChange
-    } = this.props;
+        onChange,
+    } = props;
     return (
         <div className={className} noValidate >
             <TextField
