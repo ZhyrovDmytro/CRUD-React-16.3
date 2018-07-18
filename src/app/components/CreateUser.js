@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import TextField from '../components/common/textFields/index';
 import RadioButtonGroup from '../components/common/radioButtons/index';
 import DatePicker from '../components/common/datePicker/index';
-import ContainedButtons from '../components/common/buttons/Button';
+import ContainedButtons from '../components/common/buttons/index';
 
 import { ROUT, PAGE } from '../constants';
 
@@ -19,41 +19,59 @@ class CreateUser extends Component {
         surname: '',
         gender: '',
         birthday: '',
-        isStudent: false,
-        error: false,
+        isStudent: '',
+        errors: {
+            name: 'This field is required!',
+            surname: 'This field is required!',
+            gender: 'This field is required!',
+            birthday: 'This field is required!',
+            isStudent: 'This field is required!',
+        },
+        fieldIsValid: {
+            name: true,
+            surname: true,
+            gender: true,
+            birthday: true,
+            isStudent: true,
+        },
+        formIsValid: true,
         page: '',
+        route: '',
     }
 
-    handleNameValue = (value) => {
-        this.setState({
-            name: value,
-        });
-    };
+    handleFieldValue = (event) => {
+        const fieldName = event.target.name;
+        const fieldValue = event.target.value;
 
-    handleSurnameValue = (value) => {
-        this.setState({
-            surname: value,
-        });
-    };
-
-    handleGenderValue = (value) => {
-        this.setState({
-            gender: value,
-        });
-    };
-
-    handleBirthValue = (value) => {
-        this.setState({
-            birthday: value,
-        });
-    };
-
-    handleStudentValue = (value) => {
-        const isStudent = (value === 'Yes') && true;
-
-        this.setState({
-            isStudent,
-        });
+        switch (fieldName) {
+            case 'name':
+                this.setState({
+                    name: fieldValue,
+                });
+                break;
+            case 'surname':
+                this.setState({
+                    surname: fieldValue,
+                });
+                break;
+            case 'gender':
+                this.setState({
+                    gender: fieldValue,
+                });
+                break;
+            case 'student':
+                this.setState({
+                    isStudent: fieldValue,
+                });
+                break;
+            case 'birthday':
+                this.setState({
+                    birthday: fieldValue,
+                });
+                break;
+            default:
+                break;
+        }
     };
 
     changeRoute = () => {
@@ -71,12 +89,15 @@ class CreateUser extends Component {
             isStudent,
         } = this.state;
 
+        const userId = (+new Date()).toString(36).slice(-7);
+
         const user = {
             name,
             surname,
             gender,
             birthday,
             isStudent,
+            id: userId,
         };
 
         const users = JSON.parse(localStorage.getItem('users')) || [];
@@ -84,11 +105,21 @@ class CreateUser extends Component {
         localStorage.setItem('users', JSON.stringify(users));
     };
 
+    formValidation = (context) => {
+        this.addNewUser();
+        context.updateUsersList();
+        context.changePage();
+    }
+
     render() {
         const labels = {
             gender: ['Male', 'Female'],
             isStudent: ['Yes', 'No'],
         };
+
+        const createUserText = (
+            <span>Create User</span>
+        );
 
         return (
             <MyContext.Consumer>
@@ -102,50 +133,71 @@ class CreateUser extends Component {
                                 <div className="Create__main-info">
                                     <TextField
                                         required
+                                        name="name"
                                         label="Name"
                                         className="col-xs-12 col-md-6"
-                                        error={this.state.error}
-                                        inputValue={this.handleNameValue}
+                                        error={this.state.fieldIsValid.name}
+                                        errortext={this.state.errors.name}
+                                        onChange={(event) => {
+                                            this.handleFieldValue(event);
+                                        }}
                                     />
                                     <TextField
                                         required
+                                        name="surname"
                                         label="Surname"
+                                        errortext={this.state.errors.surname}
                                         className="col-xs-12 col-md-6"
-                                        error={this.state.error}
-                                        inputValue={this.handleSurnameValue}
+                                        error={this.state.fieldIsValid.surname}
+                                        onChange={(event) => {
+                                            this.handleFieldValue(event);
+                                        }}
                                     />
                                 </div>
                                 <RadioButtonGroup
-                                    formLabel="Gender"
+                                    required
+                                    formlabel="Gender"
+                                    name="gender"
                                     labels={labels.gender}
                                     className="Create__radio-group"
-                                    error={this.state.error}
-                                    radioButtonValue={this.handleGenderValue}
+                                    error={this.state.fieldIsValid.gender}
+                                    errortext={this.state.errors.gender}
+                                    value={this.state.gender}
+                                    onChange={(event) => {
+                                        this.handleFieldValue(event);
+                                    }}
                                 />
                                 <DatePicker
                                     className="Create__datepicker"
-                                    error={this.state.error}
-                                    datePickerValue={this.handleBirthValue}
+                                    name="birthday"
+                                    error={this.state.fieldIsValid.birthday}
+                                    errortext={this.state.errors.birthday}
+                                    onChange={(event) => {
+                                        this.handleFieldValue(event);
+                                    }}
                                 />
                                 <RadioButtonGroup
-                                    formLabel="Student"
+                                    required
+                                    formlabel="Student"
+                                    name="student"
                                     labels={labels.isStudent}
                                     className="Create__radio-group"
-                                    error={this.state.error}
-                                    radioButtonValue={this.handleStudentValue}
+                                    error={this.state.fieldIsValid.isStudent}
+                                    errortext={this.state.errors.isStudent}
+                                    value={this.state.isStudent}
+                                    onChange={(event) => {
+                                        this.handleFieldValue(event);
+                                    }}
                                 />
                                 <div className="Create__buttons-group">
                                     <ContainedButtons
-                                        content="Create User"
+                                        content={createUserText}
                                         color="primary"
                                         variant="contained"
-                                        changeRoute={this.handleClick}
+                                        route={this.state.formIsValid ? ROUT.MAIN : ROUT.CREATE_USER}
                                         onClick={() => {
-                                            this.addNewUser();
-                                            context.updateUsersList();
-                                            context.changePage();
+                                            this.formValidation(context);
                                         }}
-                                        route={ROUT.MAIN}
                                     />
                                 </div>
                             </form>
