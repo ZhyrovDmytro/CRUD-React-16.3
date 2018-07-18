@@ -1,4 +1,6 @@
 .Create {
+    padding-bottom: 30px;
+
     &__main-info {
         display: flex;
         flex-direction: column;
@@ -15,5 +17,10 @@
 
     &__radio-group {
         flex-direction: row !important;
+    }
+
+    &__userItem {
+        margin: 5px 0;
+        padding: 20px;
     }
 }
