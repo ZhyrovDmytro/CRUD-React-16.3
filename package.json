@@ -92,6 +92,7 @@
     "stylelint-config-standard": "^17.0.0",
     "svgxuse": "^1.2.6",
     "uglifyify": "^4.0.5",
+    "uuid": "^3.3.2",
     "vinyl-buffer": "^1.0.1",
     "vinyl-source-stream": "^1.1.2",
     "watchify": "^3.11.0",
