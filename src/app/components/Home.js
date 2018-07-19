@@ -14,7 +14,7 @@ const Home = () => (
             {context => (
                 context.users.length === 0
                     ? (
-                        <Paper elevation={3} className="Create__userItem">
+                        <Paper elevation={3} className="create__userItem">
                             <Typography variant="headline" component="h3">
                             No users to show!
                             </Typography>

@@ -14,6 +14,7 @@ const TextField = (props) => {
         errortext,
         name,
         onBlur,
+        value,
         onChange,
     } = props;
 
@@ -29,6 +30,7 @@ const TextField = (props) => {
                 {...{ onChange }}
                 {...{ onBlur }}
                 {...{ name }}
+                {...{ value }}
                 {...{ errortext }}
             />
             {!error && required && <FormHelperText id="name-error-text">{errortext}</FormHelperText>}
@@ -40,6 +42,7 @@ TextField.propTypes = {
     className: PropTypes.string.isRequired,
     label: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
+    value: PropTypes.string,
     required: PropTypes.bool.isRequired,
     onChange: PropTypes.func,
     onBlur: PropTypes.func,

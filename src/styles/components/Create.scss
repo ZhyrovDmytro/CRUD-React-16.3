@@ -1,4 +1,4 @@
-.Create {
+.create {
     padding-bottom: 30px;
 
     &__main-info {
@@ -12,7 +12,9 @@
     }
 
     &__buttons-group {
-        text-align: right;
+        margin-top: 20px;
+        display: flex;
+        justify-content: space-between;
     }
 
     &__radio-group {

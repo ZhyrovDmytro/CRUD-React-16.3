@@ -35,11 +35,11 @@ const RadioButtonsGroup = (props) => {
             <FormLabel component="legend">{formlabel}</FormLabel>
             <RadioGroup
                 aria-label={formlabel}
-                value={value}
                 {...{ onChange }}
                 {...{ onFocus }}
                 {...{ formlabel }}
                 {...{ name }}
+                {...{ value }}
                 {...{ errortext }}
                 className={className}
             >
@@ -58,7 +58,7 @@ RadioButtonsGroup.propTypes = {
     className: PropTypes.string.isRequired,
     error: PropTypes.bool.isRequired,
     errortext: PropTypes.string.isRequired,
-    value: PropTypes.string.isRequired,
+    value: PropTypes.string,
     onChange: PropTypes.func,
     onFocus: PropTypes.func,
 };
