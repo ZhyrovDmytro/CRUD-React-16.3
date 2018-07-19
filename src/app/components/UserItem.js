@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 
-
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
@@ -11,11 +10,23 @@ import PropTypes from 'prop-types';
 
 import { ROUT } from '../constants';
 
+import ModalWindow from '../components/common/Modal';
 import ContainedButtons from '../components/common/buttons/index';
 
 import MyContext from '../context/index';
 
+
 class UserItem extends Component {
+    state = {
+        openModal: false,
+    };
+
+    correctUser = () => {
+        this.setState({
+            openModal: !this.state.openModal,
+        });
+    }
+
     render() {
         const {
             name,
@@ -37,7 +48,7 @@ class UserItem extends Component {
         return (
             <MyContext.Consumer>
                 {context => (
-                    <Card elevation={3} className="Create__userItem" >
+                    <Card elevation={3} className="create__userItem" >
                         <Grid container spacing={24} alignItems="center" justify="space-around">
                             <Grid item xs={12} sm={8} lg={10}>
                                 <Typography variant="headline" component="h4">
@@ -46,15 +57,18 @@ class UserItem extends Component {
                                 <Typography variant="headline" component="h4">
                                     {`Surname: ${surname}`}
                                 </Typography>
-                                {gender && <Typography component="p">
-                                    {`Gender: ${gender}`}
-                                </Typography>}
-                                {birthday && <Typography component="p">
-                                    {`Birthday: ${birthday}`}
-                                </Typography>}
-                                {isStudent && <Typography component="p">
-                                    {`Student: ${isStudent}`}
-                                </Typography>}
+                                {gender &&
+                                    <Typography component="p">
+                                        {`Gender: ${gender}`}
+                                    </Typography>}
+                                {birthday &&
+                                    <Typography component="p">
+                                        {`Birthday: ${birthday}`}
+                                    </Typography>}
+                                {isStudent &&
+                                    <Typography component="p">
+                                        {`Student: ${isStudent}`}
+                                    </Typography>}
                             </Grid>
                             <Grid item xs={12} sm={4} lg={2} container justify="space-around">
                                 <ContainedButtons
@@ -63,11 +77,9 @@ class UserItem extends Component {
                                     variant="fab"
                                     route={ROUT.MAIN}
                                     onClick={() => {
-                                        this.correctUser(id);
+                                        this.correctUser();
                                     }}
-                                >
-                                    <Create color="primary" />
-                                </ContainedButtons>
+                                />
                                 <ContainedButtons
                                     content={deleteUserIcon}
                                     color="secondary"
@@ -77,11 +89,14 @@ class UserItem extends Component {
                                     onClick={() => {
                                         context.deleteUser(id);
                                     }}
-                                >
-                                    <DeleteIcon color="error" />
-                                </ContainedButtons>
+                                />
                             </Grid>
                         </Grid>
+                        {this.state.openModal &&
+                            <ModalWindow
+                                user={this.props.user}
+                                openModal={this.correctUser}
+                            />}
                     </Card>
                 )}
             </MyContext.Consumer>

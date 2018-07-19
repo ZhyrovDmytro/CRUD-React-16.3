@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { v4 as uuid } from 'uuid';
 
+import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
@@ -89,15 +92,13 @@ class CreateUser extends Component {
             isStudent,
         } = this.state;
 
-        const userId = (+new Date()).toString(36).slice(-7);
-
         const user = {
             name,
             surname,
             gender,
             birthday,
             isStudent,
-            id: userId,
+            id: uuid(),
         };
 
         const users = JSON.parse(localStorage.getItem('users')) || [];
@@ -112,6 +113,17 @@ class CreateUser extends Component {
     }
 
     render() {
+        const {
+            title,
+            correctUser,
+            name,
+            surname,
+            gender,
+            birthday,
+            isStudent,
+            id,
+        } = this.props;
+
         const labels = {
             gender: ['Male', 'Female'],
             isStudent: ['Yes', 'No'],
@@ -121,20 +133,25 @@ class CreateUser extends Component {
             <span>Create User</span>
         );
 
+        const cancelText = (
+            <span>Cancel</span>
+        );
+
         return (
             <MyContext.Consumer>
                 {context => (
                     <Card>
                         <CardContent>
-                            <form className="Create">
+                            <form className="create">
                                 <Typography variant="headline" component="h1">
-                                    Create new user
+                                    {title || 'create new user'}
                                 </Typography>
-                                <div className="Create__main-info">
+                                <div className="create__main-info">
                                     <TextField
                                         required
                                         name="name"
                                         label="Name"
+                                        value={name}
                                         className="col-xs-12 col-md-6"
                                         error={this.state.fieldIsValid.name}
                                         errortext={this.state.errors.name}
@@ -146,6 +163,7 @@ class CreateUser extends Component {
                                         required
                                         name="surname"
                                         label="Surname"
+                                        value={surname}
                                         errortext={this.state.errors.surname}
                                         className="col-xs-12 col-md-6"
                                         error={this.state.fieldIsValid.surname}
@@ -159,17 +177,18 @@ class CreateUser extends Component {
                                     formlabel="Gender"
                                     name="gender"
                                     labels={labels.gender}
-                                    className="Create__radio-group"
+                                    className="create__radio-group"
                                     error={this.state.fieldIsValid.gender}
                                     errortext={this.state.errors.gender}
-                                    value={this.state.gender}
+                                    value={this.state.gender || gender}
                                     onChange={(event) => {
                                         this.handleFieldValue(event);
                                     }}
                                 />
                                 <DatePicker
-                                    className="Create__datepicker"
+                                    className="create__datepicker"
                                     name="birthday"
+                                    defaultValue={birthday}
                                     error={this.state.fieldIsValid.birthday}
                                     errortext={this.state.errors.birthday}
                                     onChange={(event) => {
@@ -181,25 +200,36 @@ class CreateUser extends Component {
                                     formlabel="Student"
                                     name="student"
                                     labels={labels.isStudent}
-                                    className="Create__radio-group"
+                                    className="create__radio-group"
                                     error={this.state.fieldIsValid.isStudent}
                                     errortext={this.state.errors.isStudent}
-                                    value={this.state.isStudent}
+                                    value={this.state.isStudent || isStudent}
                                     onChange={(event) => {
                                         this.handleFieldValue(event);
                                     }}
                                 />
-                                <div className="Create__buttons-group">
-                                    <ContainedButtons
-                                        content={createUserText}
-                                        color="primary"
-                                        variant="contained"
-                                        route={this.state.formIsValid ? ROUT.MAIN : ROUT.CREATE_USER}
-                                        onClick={() => {
-                                            this.formValidation(context);
-                                        }}
-                                    />
-                                </div>
+                                {!correctUser && (
+                                    <Grid container spacing={24} alignItems="center" justify="space-between">
+                                        <ContainedButtons
+                                            content={cancelText}
+                                            color="secondary"
+                                            variant="contained"
+                                            route={ROUT.MAIN}
+                                            onClick={() => {
+                                                context.changePage();
+                                            }}
+                                        />
+                                        <ContainedButtons
+                                            content={createUserText}
+                                            color="primary"
+                                            variant="contained"
+                                            route={this.state.formIsValid ? ROUT.MAIN : ROUT.CREATE_USER}
+                                            onClick={() => {
+                                                this.formValidation(context);
+                                            }}
+                                        />
+                                    </Grid>)
+                                }
                             </form>
                         </CardContent>
                     </Card>
@@ -208,5 +238,16 @@ class CreateUser extends Component {
         );
     }
 }
+
+CreateUser.propTypes = {
+    name: PropTypes.string,
+    surname: PropTypes.string,
+    gender: PropTypes.string,
+    isStudent: PropTypes.string,
+    birthday: PropTypes.string,
+    id: PropTypes.string,
+    title: PropTypes.string,
+    correctUser: PropTypes.bool,
+};
 
 export default CreateUser;
