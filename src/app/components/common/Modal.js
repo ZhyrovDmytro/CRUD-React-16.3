@@ -18,8 +18,8 @@ function Transition(props) {
 }
 
 class AlertDialogSlide extends Component {
-    handleClose = (openModal) => {
-        openModal();
+    handleClose = () => {
+        this.props.openModal();
     };
 
     render() {
@@ -65,31 +65,9 @@ class AlertDialogSlide extends Component {
                                 birthday={birthday}
                                 isStudent={isStudent}
                                 id={id}
+                                closeModal={this.handleClose}
                             />
                         </DialogContent>
-                        <DialogActions>
-                            <Grid container spacing={8} justify="space-around">
-                                <ContainedButtons
-                                    content={cancelText}
-                                    color="secondary"
-                                    variant="contained"
-                                    route={ROUT.MAIN}
-                                    onClick={() => {
-                                        this.handleClose(openModal);
-                                    }}
-                                />
-                                <ContainedButtons
-                                    content={correctDataText}
-                                    color="primary"
-                                    variant="contained"
-                                    route={ROUT.MAIN}
-                                    onClick={() => {
-                                        this.handleClose(openModal);
-                                        context.correctUserData(id, this.props.user);
-                                    }}
-                                />
-                            </Grid>
-                        </DialogActions>
                     </Dialog>
                 )}
             </MyContext.Consumer>

@@ -18,11 +18,11 @@ import MyContext from '../context/index';
 
 class CreateUser extends Component {
     state = {
-        name: '',
-        surname: '',
-        gender: '',
-        birthday: '',
-        isStudent: '',
+        name: this.props.name || '',
+        surname: this.props.surname || '',
+        gender: this.props.gender || '',
+        birthday: this.props.birthday || '',
+        isStudent: this.props.isStudent || '',
         errors: {
             name: 'This field is required!',
             surname: 'This field is required!',
@@ -83,6 +83,29 @@ class CreateUser extends Component {
         });
     }
 
+    correctUser = (context, id) => {
+        const selectedUser = context.users.filter(el => el.id === id);
+
+        const {
+            name,
+            surname,
+            gender,
+            birthday,
+            isStudent,
+        } = this.state;
+
+        const user = {
+            name: name || selectedUser[0].name,
+            surname: surname || selectedUser[0].surname,
+            gender: gender || selectedUser[0].gender,
+            birthday: birthday || selectedUser[0].birthday,
+            isStudent: isStudent || selectedUser[0].isStudent,
+            id,
+        };
+
+        context.correctUserData(user);
+    }
+
     addNewUser = () => {
         const {
             name,
@@ -106,21 +129,18 @@ class CreateUser extends Component {
         localStorage.setItem('users', JSON.stringify(users));
     };
 
-    formValidation = (context) => {
-        this.addNewUser();
+    formValidation = (context, id) => {
+        this.props.correctUser ? this.correctUser(context, id) : this.addNewUser();
         context.updateUsersList();
-        context.changePage();
+        this.props.correctUser ? this.props.closeModal() : context.changePage();
     }
 
     render() {
         const {
             title,
             correctUser,
-            name,
-            surname,
-            gender,
             birthday,
-            isStudent,
+            closeModal,
             id,
         } = this.props;
 
@@ -137,6 +157,10 @@ class CreateUser extends Component {
             <span>Cancel</span>
         );
 
+        const correctUserData = (
+            <span>Correct user</span>
+        );
+
         return (
             <MyContext.Consumer>
                 {context => (
@@ -151,7 +175,7 @@ class CreateUser extends Component {
                                         required
                                         name="name"
                                         label="Name"
-                                        value={name}
+                                        value={this.state.name}
                                         className="col-xs-12 col-md-6"
                                         error={this.state.fieldIsValid.name}
                                         errortext={this.state.errors.name}
@@ -163,7 +187,7 @@ class CreateUser extends Component {
                                         required
                                         name="surname"
                                         label="Surname"
-                                        value={surname}
+                                        value={this.state.surname}
                                         errortext={this.state.errors.surname}
                                         className="col-xs-12 col-md-6"
                                         error={this.state.fieldIsValid.surname}
@@ -180,7 +204,7 @@ class CreateUser extends Component {
                                     className="create__radio-group"
                                     error={this.state.fieldIsValid.gender}
                                     errortext={this.state.errors.gender}
-                                    value={this.state.gender || gender}
+                                    value={this.state.gender}
                                     onChange={(event) => {
                                         this.handleFieldValue(event);
                                     }}
@@ -203,33 +227,32 @@ class CreateUser extends Component {
                                     className="create__radio-group"
                                     error={this.state.fieldIsValid.isStudent}
                                     errortext={this.state.errors.isStudent}
-                                    value={this.state.isStudent || isStudent}
+                                    value={this.state.isStudent}
                                     onChange={(event) => {
                                         this.handleFieldValue(event);
                                     }}
                                 />
-                                {!correctUser && (
-                                    <Grid container spacing={24} alignItems="center" justify="space-between">
-                                        <ContainedButtons
-                                            content={cancelText}
-                                            color="secondary"
-                                            variant="contained"
-                                            route={ROUT.MAIN}
-                                            onClick={() => {
+                                <Grid container spacing={24} alignItems="center" justify="space-between">
+                                    <ContainedButtons
+                                        content={cancelText}
+                                        color="secondary"
+                                        variant="contained"
+                                        route={ROUT.MAIN}
+                                        onClick={() => {
+                                            correctUser ? closeModal() :
                                                 context.changePage();
-                                            }}
-                                        />
-                                        <ContainedButtons
-                                            content={createUserText}
-                                            color="primary"
-                                            variant="contained"
-                                            route={this.state.formIsValid ? ROUT.MAIN : ROUT.CREATE_USER}
-                                            onClick={() => {
-                                                this.formValidation(context);
-                                            }}
-                                        />
-                                    </Grid>)
-                                }
+                                        }}
+                                    />
+                                    <ContainedButtons
+                                        content={correctUser ? correctUserData : createUserText}
+                                        color="primary"
+                                        variant="contained"
+                                        route={(this.state.formIsValid || correctUser) ? ROUT.MAIN : ROUT.CREATE_USER}
+                                        onClick={() => {
+                                            this.formValidation(context, id);
+                                        }}
+                                    />
+                                </Grid>
                             </form>
                         </CardContent>
                     </Card>
@@ -248,6 +271,7 @@ CreateUser.propTypes = {
     id: PropTypes.string,
     title: PropTypes.string,
     correctUser: PropTypes.bool,
+    closeModal: PropTypes.func,
 };
 
 export default CreateUser;

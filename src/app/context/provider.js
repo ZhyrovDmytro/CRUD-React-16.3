@@ -30,20 +30,10 @@ class MyProvider extends Component {
 
                         localStorage.setItem('users', JSON.stringify(newUserList));
                     },
-                    correctUserData: (id) => {
+                    correctUserData: (correctedUser) => {
                         const storedUsers = JSON.parse(localStorage.getItem('users'));
-                        const selectedUser = storedUsers.filter(el => el.id === id);
 
-                        // Without new data yet
-                        const updatedUserData = { ...selectedUser[0],
-                            name: 'new',
-                            surname: 'new',
-                            gender: 'new',
-                            birthday: 'new',
-                            isStudent: 'new',
-                        };
-
-                        storedUsers[storedUsers.findIndex(el => el.id === updatedUserData.id)] = updatedUserData;
+                        storedUsers[storedUsers.findIndex(el => el.id === correctedUser.id)] = correctedUser;
 
                         this.setState({
                             users: storedUsers,
