@@ -25,7 +25,6 @@ class UserItem extends Component {
 
     delteUserMessage = () => {
         Alert.info('User deleted', {
-            position: 'top-right',
             effect: 'slide',
         });
     }
