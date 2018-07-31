@@ -7,6 +7,8 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 
+import Alert from 'react-s-alert';
+
 import TextField from '../components/common/textFields/index';
 import RadioButtonGroup from '../components/common/radioButtons/index';
 import DatePicker from '../components/common/datePicker/index';
@@ -104,6 +106,10 @@ class CreateUser extends Component {
         };
 
         context.correctUserData(user);
+
+        Alert.info('User data was corrected!', {
+            effect: 'slide',
+        });
     }
 
     addNewUser = () => {
@@ -127,6 +133,10 @@ class CreateUser extends Component {
         const users = JSON.parse(localStorage.getItem('users')) || [];
         users.push(user);
         localStorage.setItem('users', JSON.stringify(users));
+
+        Alert.success('User was created!', {
+            effect: 'slide',
+        });
     };
 
     formValidation = (context, id) => {
@@ -168,7 +178,7 @@ class CreateUser extends Component {
                         <CardContent>
                             <form className="create">
                                 <Typography variant="headline" component="h1">
-                                    {title || 'create new user'}
+                                    {title || 'Сreate new user'}
                                 </Typography>
                                 <div className="create__main-info">
                                     <TextField

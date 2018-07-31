@@ -8,6 +8,8 @@ import Create from '@material-ui/icons/Create';
 
 import PropTypes from 'prop-types';
 
+import Alert from 'react-s-alert';
+
 import { ROUT } from '../constants';
 
 import ModalWindow from '../components/common/Modal';
@@ -20,6 +22,13 @@ class UserItem extends Component {
     state = {
         openModal: false,
     };
+
+    delteUserMessage = () => {
+        Alert.info('User deleted', {
+            position: 'top-right',
+            effect: 'slide',
+        });
+    }
 
     correctUser = () => {
         this.setState({
@@ -88,6 +97,7 @@ class UserItem extends Component {
                                     route={ROUT.MAIN}
                                     onClick={() => {
                                         context.deleteUser(id);
+                                        this.delteUserMessage();
                                     }}
                                 />
                             </Grid>
