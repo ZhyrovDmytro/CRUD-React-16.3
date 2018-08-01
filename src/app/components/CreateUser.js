@@ -45,38 +45,14 @@ class CreateUser extends Component {
     }
 
     handleFieldValue = (event) => {
-        const fieldName = event.target.name;
-        const fieldValue = event.target.value;
+        const { target: {
+            name,
+            value,
+        } } = event;
 
-        switch (fieldName) {
-            case 'name':
-                this.setState({
-                    name: fieldValue,
-                });
-                break;
-            case 'surname':
-                this.setState({
-                    surname: fieldValue,
-                });
-                break;
-            case 'gender':
-                this.setState({
-                    gender: fieldValue,
-                });
-                break;
-            case 'student':
-                this.setState({
-                    isStudent: fieldValue,
-                });
-                break;
-            case 'birthday':
-                this.setState({
-                    birthday: fieldValue,
-                });
-                break;
-            default:
-                break;
-        }
+        this.setState({
+            [name]: value,
+        });
     };
 
     changeRoute = () => {
@@ -232,7 +208,7 @@ class CreateUser extends Component {
                                 <RadioButtonGroup
                                     required
                                     formlabel="Student"
-                                    name="student"
+                                    name="isStudent"
                                     labels={labels.isStudent}
                                     className="create__radio-group"
                                     error={this.state.fieldIsValid.isStudent}
