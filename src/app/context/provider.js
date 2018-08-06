@@ -15,12 +15,31 @@ class MyProvider extends Component {
             users: JSON.parse(localStorage.getItem('users')) || [],
         });
     }
-
     render() {
         return (
             <MyContext.Provider
                 value={{
-                    state: this.state.users,
+                    users: this.state.users,
+                    deleteUser: (id) => {
+                        const storedUsers = JSON.parse(localStorage.getItem('users'));
+                        const newUserList = storedUsers.filter(el => el.id !== id);
+
+                        this.setState({
+                            users: this.state.users.filter(el => el.id !== id),
+                        });
+
+                        localStorage.setItem('users', JSON.stringify(newUserList));
+                    },
+                    correctUserData: (correctedUser) => {
+                        const storedUsers = JSON.parse(localStorage.getItem('users'));
+
+                        storedUsers[storedUsers.findIndex(el => el.id === correctedUser.id)] = correctedUser;
+
+                        this.setState({
+                            users: storedUsers,
+                        });
+                        localStorage.setItem('users', JSON.stringify(storedUsers));
+                    },
                     updateUsersList: () => this.setState({
                         users: JSON.parse(localStorage.getItem('users')),
                     }),

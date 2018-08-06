@@ -1,60 +1,53 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
 
-const styles = theme => ({
-    container: {
-        display: 'flex',
-        flexWrap: 'wrap',
-    },
-    formControl: {
-        margin: theme.spacing.unit,
-    },
-});
+const TextField = (props) => {
+    const {
+        className,
+        label,
+        required,
+        error,
+        errortext,
+        name,
+        onBlur,
+        value,
+        onChange,
+    } = props;
 
-class TextField extends React.Component {
-    state = {
-        value: '',
-    };
-
-    handleChange = (event) => {
-        this.setState({ value: event.target.value }, () => {
-            this.props.inputValue(this.state.value);
-        });
-    };
-
-    render() {
-        const {
-            className,
-            label,
-            required,
-            error,
-        } = this.props;
-
-        return (
-            <FormControl
-                required={required}
-                error={error}
-                className={className}
-            >
-                <InputLabel htmlFor="name-simple">{label}</InputLabel>
-                <Input id="name-simple" value={this.state.value} onChange={this.handleChange} />
-                {error && <FormHelperText id="name-error-text">This field is required</FormHelperText>}
-            </FormControl>
-        );
-    }
-}
+    return (
+        <FormControl
+            {...{ required }}
+            {...{ className }}
+            error={!error}
+        >
+            <InputLabel htmlFor="name-simple">{label}</InputLabel>
+            <Input
+                id="name-simple"
+                {...{ onChange }}
+                {...{ onBlur }}
+                {...{ name }}
+                {...{ value }}
+                {...{ errortext }}
+            />
+            {!error && required && <FormHelperText id="name-error-text">{errortext}</FormHelperText>}
+        </FormControl>
+    );
+};
 
 TextField.propTypes = {
     className: PropTypes.string.isRequired,
     label: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    value: PropTypes.string,
     required: PropTypes.bool.isRequired,
-    inputValue: PropTypes.func.isRequired,
+    onChange: PropTypes.func,
+    onBlur: PropTypes.func,
     error: PropTypes.bool.isRequired,
+    errortext: PropTypes.string.isRequired,
 };
 
-export default withStyles(styles)(TextField);
+export default TextField;

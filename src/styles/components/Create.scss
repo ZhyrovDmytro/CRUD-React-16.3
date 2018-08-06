@@ -1,4 +1,6 @@
-.Create {
+.create {
+    padding-bottom: 30px;
+
     &__main-info {
         display: flex;
         flex-direction: column;
@@ -10,10 +12,18 @@
     }
 
     &__buttons-group {
-        text-align: right;
+        margin-top: 20px;
+        display: flex;
+        justify-content: space-between;
     }
 
     &__radio-group {
-        flex-direction: row !important;
+        display: flex;
+        flex-direction: row;
+    }
+
+    &__userItem {
+        margin: 5px 0;
+        padding: 20px;
     }
 }

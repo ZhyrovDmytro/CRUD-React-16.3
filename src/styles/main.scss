@@ -11,6 +11,8 @@ body {
 }
 
 @import 'components/*';
+@import 'https://cdn.jsdelivr.net/npm/react-s-alert@1.4.1/dist/s-alert-default.css';
+@import 'https://cdn.jsdelivr.net/npm/react-s-alert@1.4.1/dist/s-alert-css-effects/slide.css';
 
 a {
     margin: 5px;
