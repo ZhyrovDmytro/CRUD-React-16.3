@@ -41,9 +41,10 @@ const RadioButtonsGroup = (props) => {
                 {...{ name }}
                 {...{ value }}
                 {...{ errortext }}
-                className={className}
             >
+            <div {...{className}}>
                 { RadioLabel }
+            </div>
             </RadioGroup>
             {!error && required && <FormHelperText id="name-error-text">{errortext}</FormHelperText>}
         </FormControl>
