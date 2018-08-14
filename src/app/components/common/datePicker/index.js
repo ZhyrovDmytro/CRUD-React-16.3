@@ -40,4 +40,8 @@ DatePicker.propTypes = {
     onChange: PropTypes.func.isRequired,
 };
 
+DatePicker.defaultProps = {
+    defaultValue: '',
+};
+
 export default DatePicker;

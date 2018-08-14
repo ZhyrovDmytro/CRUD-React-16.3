@@ -50,4 +50,10 @@ TextField.propTypes = {
     errortext: PropTypes.string.isRequired,
 };
 
+TextField.defaultProps = {
+    value: '',
+    onChange: () => {},
+    onBlur: () => {},
+};
+
 export default TextField;

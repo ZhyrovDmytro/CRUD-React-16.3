@@ -33,4 +33,9 @@ ContainedButtons.propTypes = {
     onClick: PropTypes.func,
 };
 
+ContainedButtons.defaultProps = {
+    route: '',
+    onClick: () => {},
+};
+
 export default ContainedButtons;

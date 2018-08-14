@@ -260,4 +260,16 @@ CreateUser.propTypes = {
     closeModal: PropTypes.func,
 };
 
+CreateUser.defaultProps = {
+    name: '',
+    surname: '',
+    gender: '',
+    isStudent: '',
+    birthday: '',
+    id: '',
+    title: '',
+    correctUser: false,
+    closeModal: () => {},
+};
+
 export default CreateUser;

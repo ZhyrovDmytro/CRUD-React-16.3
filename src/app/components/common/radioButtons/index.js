@@ -42,9 +42,9 @@ const RadioButtonsGroup = (props) => {
                 {...{ value }}
                 {...{ errortext }}
             >
-            <div {...{className}}>
-                { RadioLabel }
-            </div>
+                <div {...{ className }}>
+                    { RadioLabel }
+                </div>
             </RadioGroup>
             {!error && required && <FormHelperText id="name-error-text">{errortext}</FormHelperText>}
         </FormControl>
@@ -62,6 +62,12 @@ RadioButtonsGroup.propTypes = {
     value: PropTypes.string,
     onChange: PropTypes.func,
     onFocus: PropTypes.func,
+};
+
+RadioButtonsGroup.defaultProps = {
+    value: '',
+    onChange: () => {},
+    onFocus: () => {},
 };
 
 export default RadioButtonsGroup;
