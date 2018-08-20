@@ -6,14 +6,21 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
+import { withStyles } from '@material-ui/core/styles';
+
+const styles = {
+    groupWrapper: {
+        'flex-direction': 'row',
+    },
+};
 
 const RadioButtonsGroup = (props) => {
     const {
         labels,
         formlabel,
         name,
-        className,
         error,
+        classes,
         value,
         onFocus,
         required,
@@ -41,10 +48,9 @@ const RadioButtonsGroup = (props) => {
                 {...{ name }}
                 {...{ value }}
                 {...{ errortext }}
+                className={classes.groupWrapper}
             >
-                <div {...{ className }}>
-                    { RadioLabel }
-                </div>
+                { RadioLabel }
             </RadioGroup>
             {!error && required && <FormHelperText id="name-error-text">{errortext}</FormHelperText>}
         </FormControl>
@@ -62,6 +68,9 @@ RadioButtonsGroup.propTypes = {
     value: PropTypes.string,
     onChange: PropTypes.func,
     onFocus: PropTypes.func,
+    classes: PropTypes.shape({
+        groupWrapper: PropTypes.string.isRequired,
+    }).isRequired,
 };
 
 RadioButtonsGroup.defaultProps = {
@@ -70,4 +79,4 @@ RadioButtonsGroup.defaultProps = {
     onFocus: () => {},
 };
 
-export default RadioButtonsGroup;
+export default withStyles(styles)(RadioButtonsGroup);
