@@ -23,8 +23,6 @@ class CreateUser extends Component {
         super(props);
 
         this.state = {
-            name: '',
-            surname: '',
             gender: '',
             birthday: '',
             isStudent: '',
@@ -63,8 +61,10 @@ class CreateUser extends Component {
         } = this.props;
 
         this.setState({
-            name,
-            surname,
+            formData: {
+                name,
+                surname,
+            },
             gender,
             birthday,
             isStudent,
@@ -109,11 +109,13 @@ class CreateUser extends Component {
         const selectedUser = context.users.filter(el => el.id === id);
 
         const {
-            name,
-            surname,
             gender,
             birthday,
             isStudent,
+            formData: {
+                name,
+                surname,
+            },
         } = this.state;
 
         const user = {
