@@ -298,7 +298,7 @@ CreateUser.propTypes = {
         correctUserData: PropTypes.func.isRequired,
         deleteUser: PropTypes.func.isRequired,
         updateUsersList: PropTypes.func.isRequired,
-        users: PropTypes.arrayOf(PropTypes.string),
+        users: PropTypes.arrayOf(PropTypes.object),
     }).isRequired,
 };
 
