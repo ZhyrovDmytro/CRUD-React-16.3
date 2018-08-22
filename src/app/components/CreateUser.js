@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { v4 as uuid } from 'uuid';
-
+import { ValidatorForm } from 'react-material-ui-form-validator';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -14,34 +14,84 @@ import RadioButtonGroup from '../components/common/radioButtons/index';
 import DatePicker from '../components/common/datePicker/index';
 import ContainedButtons from '../components/common/buttons/index';
 
-import { ROUT, PAGE } from '../constants';
+import withContext from '../HOC/Context';
 
-import MyContext from '../context/index';
+import { ROUT } from '../constants';
 
 class CreateUser extends Component {
-    state = {
-        name: this.props.name || '',
-        surname: this.props.surname || '',
-        gender: this.props.gender || '',
-        birthday: this.props.birthday || '',
-        isStudent: this.props.isStudent || '',
-        errors: {
-            name: 'This field is required!',
-            surname: 'This field is required!',
-            gender: 'This field is required!',
-            birthday: 'This field is required!',
-            isStudent: 'This field is required!',
-        },
-        fieldIsValid: {
-            name: true,
-            surname: true,
-            gender: true,
-            birthday: true,
-            isStudent: true,
-        },
-        formIsValid: true,
-        page: '',
-        route: '',
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            name: '',
+            surname: '',
+            gender: '',
+            birthday: '',
+            isStudent: '',
+            errors: {
+                name: 'This field is required!',
+                surname: 'This field is required!',
+                gender: 'This field is required!',
+                birthday: 'This field is required!',
+                isStudent: 'This field is required!',
+            },
+            fieldIsValid: {
+                name: true,
+                surname: true,
+                gender: true,
+                birthday: true,
+                isStudent: true,
+            },
+            formIsValid: true,
+            page: '',
+            route: '',
+            formData: {
+                name: '',
+                surname: '',
+            },
+            submitted: false,
+        };
+    }
+
+    componentWillMount() {
+        const {
+            name,
+            surname,
+            gender,
+            birthday,
+            isStudent,
+        } = this.props;
+
+        this.setState({
+            name,
+            surname,
+            gender,
+            birthday,
+            isStudent,
+        });
+    }
+
+    onSubmit = () => {
+        const { context, id } = this.props;
+
+        this.setState({
+            submitted: true,
+        });
+
+        this.props.correctUser ? this.correctUser(context, id) : this.addNewUser();
+        context.updateUsersList();
+        this.props.correctUser && this.props.closeModal();
+    }
+
+    handleSubmit = (e) => {
+        e.preventDefault();
+        this.refs.form.submit();
+    }
+
+    handleChange = (event) => {
+        const { formData } = this.state;
+        formData[event.target.name] = event.target.value;
+        this.setState({ formData });
     }
 
     handleFieldValue = (event) => {
@@ -54,12 +104,6 @@ class CreateUser extends Component {
             [name]: value,
         });
     };
-
-    changeRoute = () => {
-        this.setState({
-            page: PAGE.MAIN,
-        });
-    }
 
     correctUser = (context, id) => {
         const selectedUser = context.users.filter(el => el.id === id);
@@ -90,8 +134,10 @@ class CreateUser extends Component {
 
     addNewUser = () => {
         const {
-            name,
-            surname,
+            formData: {
+                name,
+                surname,
+            },
             gender,
             birthday,
             isStudent,
@@ -115,19 +161,13 @@ class CreateUser extends Component {
         });
     };
 
-    formValidation = (context, id) => {
-        this.props.correctUser ? this.correctUser(context, id) : this.addNewUser();
-        context.updateUsersList();
-        this.props.correctUser ? this.props.closeModal() : context.changePage();
-    }
-
     render() {
         const {
             title,
             correctUser,
             birthday,
             closeModal,
-            id,
+            context,
         } = this.props;
 
         const labels = {
@@ -147,103 +187,98 @@ class CreateUser extends Component {
             <span>Correct user</span>
         );
 
+        const { formData } = this.state;
+
         return (
-            <MyContext.Consumer>
-                {context => (
-                    <Card>
-                        <CardContent>
-                            <form className="create">
-                                <Typography variant="headline" component="h1">
-                                    {title || 'Сreate new user'}
-                                </Typography>
-                                <div className="create__main-info">
-                                    <TextField
-                                        required
-                                        name="name"
-                                        label="Name"
-                                        value={this.state.name}
-                                        className="col-xs-12 col-md-6"
-                                        error={this.state.fieldIsValid.name}
-                                        errortext={this.state.errors.name}
-                                        onChange={(event) => {
-                                            this.handleFieldValue(event);
-                                        }}
-                                    />
-                                    <TextField
-                                        required
-                                        name="surname"
-                                        label="Surname"
-                                        value={this.state.surname}
-                                        errortext={this.state.errors.surname}
-                                        className="col-xs-12 col-md-6"
-                                        error={this.state.fieldIsValid.surname}
-                                        onChange={(event) => {
-                                            this.handleFieldValue(event);
-                                        }}
-                                    />
-                                </div>
-                                <RadioButtonGroup
-                                    required
-                                    formlabel="Gender"
-                                    name="gender"
-                                    labels={labels.gender}
-                                    className="create__radio-group"
-                                    error={this.state.fieldIsValid.gender}
-                                    errortext={this.state.errors.gender}
-                                    value={this.state.gender}
-                                    onChange={(event) => {
-                                        this.handleFieldValue(event);
-                                    }}
-                                />
-                                <DatePicker
-                                    className="create__datepicker"
-                                    name="birthday"
-                                    defaultValue={birthday}
-                                    error={this.state.fieldIsValid.birthday}
-                                    errortext={this.state.errors.birthday}
-                                    onChange={(event) => {
-                                        this.handleFieldValue(event);
-                                    }}
-                                />
-                                <RadioButtonGroup
-                                    required
-                                    formlabel="Student"
-                                    name="isStudent"
-                                    labels={labels.isStudent}
-                                    className="create__radio-group"
-                                    error={this.state.fieldIsValid.isStudent}
-                                    errortext={this.state.errors.isStudent}
-                                    value={this.state.isStudent}
-                                    onChange={(event) => {
-                                        this.handleFieldValue(event);
-                                    }}
-                                />
-                                <Grid container spacing={24} alignItems="center" justify="space-between">
-                                    <ContainedButtons
-                                        content={cancelText}
-                                        color="secondary"
-                                        variant="contained"
-                                        route={ROUT.MAIN}
-                                        onClick={() => {
-                                            correctUser ? closeModal() :
-                                                context.changePage();
-                                        }}
-                                    />
-                                    <ContainedButtons
-                                        content={correctUser ? correctUserData : createUserText}
-                                        color="primary"
-                                        variant="contained"
-                                        route={(this.state.formIsValid || correctUser) ? ROUT.MAIN : ROUT.CREATE_USER}
-                                        onClick={() => {
-                                            this.formValidation(context, id);
-                                        }}
-                                    />
-                                </Grid>
-                            </form>
-                        </CardContent>
-                    </Card>
-                )}
-            </MyContext.Consumer>
+            <ValidatorForm
+                className="create"
+                ref="form"
+                onSubmit={this.onSubmit}
+            >
+                <Card>
+                    <CardContent>
+                        <Typography variant="headline" component="h1">
+                            {title || 'Create new user'}
+                        </Typography>
+                        <div className="create__main-info">
+                            <TextField
+                                required
+                                name="name"
+                                label="Name"
+                                value={formData.name}
+                                className="col-xs-12 col-md-6"
+                                validators={['required']}
+                                errorMessages={this.state.errors.name}
+                                onChange={this.handleChange}
+                            />
+                            <TextField
+                                required
+                                name="surname"
+                                label="Surname"
+                                value={formData.surname}
+                                className="col-xs-12 col-md-6"
+                                validators={['required']}
+                                errorMessages={this.state.errors.surname}
+                                onChange={this.handleChange}
+                            />
+                        </div>
+                        <RadioButtonGroup
+                            formlabel="Gender"
+                            name="gender"
+                            labels={labels.gender}
+                            error={this.state.fieldIsValid.gender}
+                            errortext={this.state.errors.gender}
+                            value={this.state.gender}
+                            onChange={(event) => {
+                                this.handleFieldValue(event);
+                            }}
+                        />
+                        <DatePicker
+                            className="create__datepicker"
+                            name="birthday"
+                            defaultValue={birthday}
+                            error={this.state.fieldIsValid.birthday}
+                            errortext={this.state.errors.birthday}
+                            onChange={(event) => {
+                                this.handleFieldValue(event);
+                            }}
+                        />
+                        <RadioButtonGroup
+                            formlabel="Student"
+                            name="isStudent"
+                            labels={labels.isStudent}
+                            error={this.state.fieldIsValid.isStudent}
+                            errortext={this.state.errors.isStudent}
+                            value={this.state.isStudent}
+                            onChange={(event) => {
+                                this.handleFieldValue(event);
+                            }}
+                        />
+                        <Grid container spacing={24} alignItems="center" justify="space-between">
+                            <ContainedButtons
+                                type="reset"
+                                content={cancelText}
+                                color="secondary"
+                                variant="contained"
+                                route={ROUT.MAIN}
+                                onClick={() => {
+                                    correctUser ? closeModal() :
+                                        context.changePage();
+                                }}
+                            />
+                            <ContainedButtons
+                                type="submit"
+                                content={correctUser ? correctUserData : createUserText}
+                                color="primary"
+                                variant="contained"
+                                route={(this.state.formIsValid || correctUser) ? ROUT.MAIN : ROUT.CREATE_USER}
+                                onClick={this.handleSubmit}
+                            />
+                        </Grid>
+                    </CardContent>
+                </Card>
+            </ValidatorForm>
+
         );
     }
 }
@@ -258,6 +293,13 @@ CreateUser.propTypes = {
     title: PropTypes.string,
     correctUser: PropTypes.bool,
     closeModal: PropTypes.func,
+    context: PropTypes.shape({
+        changePage: PropTypes.func.isRequired,
+        correctUserData: PropTypes.func.isRequired,
+        deleteUser: PropTypes.func.isRequired,
+        updateUsersList: PropTypes.func.isRequired,
+        users: PropTypes.arrayOf(PropTypes.string),
+    }).isRequired,
 };
 
 CreateUser.defaultProps = {
@@ -269,7 +311,8 @@ CreateUser.defaultProps = {
     id: '',
     title: '',
     correctUser: false,
+    users: [],
     closeModal: () => {},
 };
 
-export default CreateUser;
+export default withContext(CreateUser);

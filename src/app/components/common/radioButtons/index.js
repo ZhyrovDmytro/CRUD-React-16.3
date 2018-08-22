@@ -61,8 +61,7 @@ RadioButtonsGroup.propTypes = {
     labels: PropTypes.arrayOf(PropTypes.string).isRequired,
     formlabel: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
-    required: PropTypes.bool.isRequired,
-    className: PropTypes.string.isRequired,
+    required: PropTypes.bool,
     error: PropTypes.bool.isRequired,
     errortext: PropTypes.string.isRequired,
     value: PropTypes.string,
@@ -75,6 +74,7 @@ RadioButtonsGroup.propTypes = {
 
 RadioButtonsGroup.defaultProps = {
     value: '',
+    required: false,
     onChange: () => {},
     onFocus: () => {},
 };

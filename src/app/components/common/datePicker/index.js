@@ -15,7 +15,6 @@ const DatePicker = (props) => {
     return (
         <div className={className} noValidate >
             <TextField
-                required
                 label="Birthday"
                 type="date"
                 {...{ name }}
