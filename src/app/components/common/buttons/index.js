@@ -9,16 +9,22 @@ const ContainedButtons = (props) => {
         color,
         variant,
         onClick,
+        onBlur,
+        disabled,
         route,
+        type,
     } = props;
 
     return (
         <Button
+            {...{ color }}
+            {...{ disabled }}
+            {...{ type }}
             variant={variant}
-            color={color}
             component={Link}
             to={route}
             {...{ onClick }}
+            {...{ onBlur }}
         >
             {content}
         </Button>
@@ -31,6 +37,13 @@ ContainedButtons.propTypes = {
     color: PropTypes.string.isRequired,
     route: PropTypes.string,
     onClick: PropTypes.func,
+    type: PropTypes.string,
+};
+
+ContainedButtons.defaultProps = {
+    route: '',
+    type: '',
+    onClick: () => {},
 };
 
 export default ContainedButtons;

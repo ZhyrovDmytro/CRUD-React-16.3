@@ -15,7 +15,6 @@ const DatePicker = (props) => {
     return (
         <div className={className} noValidate >
             <TextField
-                required
                 label="Birthday"
                 type="date"
                 {...{ name }}
@@ -38,6 +37,10 @@ DatePicker.propTypes = {
     defaultValue: PropTypes.string,
     errortext: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
+};
+
+DatePicker.defaultProps = {
+    defaultValue: '',
 };
 
 export default DatePicker;
