@@ -9,7 +9,6 @@ const ContainedButtons = (props) => {
         color,
         variant,
         onClick,
-        onBlur,
         disabled,
         route,
         type,
@@ -24,7 +23,6 @@ const ContainedButtons = (props) => {
             component={Link}
             to={route}
             {...{ onClick }}
-            {...{ onBlur }}
         >
             {content}
         </Button>
