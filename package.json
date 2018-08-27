@@ -11,6 +11,7 @@
   },
   "scripts": {
     "lint": "gulp eslint stylelint",
+    "start": "node index.js",
     "prepush-msg": "echo 'Running lint task...' && exit 0"
   },
   "pre-push": [
